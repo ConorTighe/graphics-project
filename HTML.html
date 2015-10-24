@@ -1,1 +1,39 @@
-<html></html>
+<!DOCTYPE HTML>
+<html>
+    <head>
+       <meta charset="UTF-8">
+       <title>Graphics Project - Conor Tighe</title>
+  
+       <!-- EaselJS library -->
+       <script src="lib/easel.js"></script>
+        <script>
+            
+            // Initialize on start up so game runs smoothly
+            function init() {
+  
+               canvas = document.getElementById("canvas");
+	           stage = new Stage(canvas);
+ 
+               bg = new Image();
+	           bg.src = "img/grassbg.jpg";
+	           bg.onload = setBG;
+               stage.addChild(background);
+ 
+               stage.update();
+            }
+            
+            // Simple function for setting up the background
+            function setBG(event){
+	           var bgrnd = new Bitmap(bg);
+	           stage.addChild(bgrnd);
+	           stage.update();
+            }
+
+        </script>
+    
+    </head>
+ 
+    <body onload="init();">
+       <canvas id="canvas" width="500" height="500" style="border: thin black solid;" ></canvas>
+    </body>
+</html>
