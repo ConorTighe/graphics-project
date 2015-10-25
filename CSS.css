@@ -1,0 +1,10 @@
+#canvasStyle {
+	
+	background-image: url("img/grassbg.jpg");
+    position: absolute;
+    top:0;
+    bottom: 500;
+    left: 0;
+    right: 500;
+    margin:auto; 
+}

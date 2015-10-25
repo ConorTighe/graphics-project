@@ -3,6 +3,9 @@
     <head>
        <meta charset="UTF-8">
        <title>Graphics Project - Conor Tighe</title>
+        
+        <!-- CSS file -->
+        <link rel="stylesheet" type="text/css" href="CSS.css" />
   
        <!-- EaselJS library -->
        <script src="lib/easel.js"></script>
@@ -14,10 +17,7 @@
                canvas = document.getElementById("canvas");
 	           stage = new Stage(canvas);
  
-               bg = new Image();
-	           bg.src = "img/grassbg.jpg";
-	           bg.onload = setBG;
-               stage.addChild(background);
+               
  
                stage.update();
             }
@@ -28,12 +28,17 @@
 	           stage.addChild(bgrnd);
 	           stage.update();
             }
+            
+           
 
         </script>
     
     </head>
  
     <body onload="init();">
+        <!-- Use CSS to set canvas background -->
+        <div id="canvasStyle">
        <canvas id="canvas" width="500" height="500" style="border: thin black solid;" ></canvas>
+        </div>
     </body>
 </html>

@@ -1,8 +1,3 @@
-## Example
-- thing
+## Graphics Project - Conor Tighe
 
-1. point
-
-1. point
-
-1. point
+- A 2D game for web browser
