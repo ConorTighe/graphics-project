@@ -5,6 +5,7 @@ var HEIGHT = 640;
 var stage;
 var animation;
 var fishAnimation;
+var fishList;
 var spriteSheet;
 var scoreText;
 var score = 0;
@@ -58,16 +59,16 @@ function queueLoaded(event)
         "animations": { "Move": [0,4],
                       speed: 0.5}
         
+        
     });
     
     fishSpriteSheet = new createjs.SpriteSheet({
         "images": [queue.getResult('fish')],
         "frames": {"width": 31, "height": 30},
         "animations": { "Swim": [0,3],
-                      speed: 1}
+                       }
         
     });
-    
     
     createCreature();
     createFish();
@@ -90,17 +91,28 @@ function createCreature ()
     document.onkeydown = keyPressed;
 }
 
-function createFish ()
+function createFish (event)
 {
+    var l = 20;
+    var container = new createjs.Container();
+    stage.addChild(container);
+    var fishList=[];
+    for(var i =0; i<l; i++){
 	fishAnimation = new createjs.Sprite(fishSpriteSheet, "Swim");
+    container.addChild(fishAnimation);
+    fishAnimation.name = "fish"+i;
+    setFish(fishAnimation);
     fishAnimation.regX = 16;
     fishAnimation.regY = 15;
-    fishAnimation.x = 500;
-    fishAnimation.y = 400;
     fishAnimation.gotoAndPlay("Swim");
-    stage.addChildAt(fishAnimation, 1);	
+    fishList.push(fishAnimation);
+    }
 }
-
+function setFish(fish)
+{
+    fish.x = WIDTH - Math.random()*300;
+    fish.y = HEIGHT - Math.random()*600;
+}
 function keyPressed(event) {
 		switch(event.keyCode) {
 			case KEYCODE_UP: 
@@ -115,16 +127,23 @@ function keyPressed(event) {
 
 function tickEvent()
 {
-	
+    var l = fishList.length;
+    for(i=0;i<l; i++){
+        var fish = fishList[i];
+        if(fishAnimation.x > -200){
+            setFish(fish);
+        } 
+        fish.x = fish.x-10;
+    }
+    
 	if(animation.y > HEIGHT)
 	{
-        		animation.y = HEIGHT;
+        animation.y = HEIGHT;
 
 	}
     if(animation.y < 0){
         animation.y = 0;
     }
 
-	fishAnimation.x -= 5;
     
 }
