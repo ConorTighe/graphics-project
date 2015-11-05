@@ -5,13 +5,13 @@ var HEIGHT = 640;
 var stage;
 var animation;
 var fishAnimation;
-var fishList;
+var fishList = [];
 var spriteSheet;
 var scoreText;
 var score = 0;
-var creatureXPos = 100;
-var creatureYPos = 100;
 var KEYCODE_UP = 38, KEYCODE_DOWN = 40;
+
+
 
 window.onload = function ()
 {
@@ -45,19 +45,14 @@ function queueLoaded(event)
     var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"))
     stage.addChild(backgroundImage);
     
-    // Keep track of Fish eaten
-    scoreText = new createjs.Text("Fish: " + score.toString(), "36px Arial", "#FDD");
-    scoreText.x = 10;
-    scoreText.y = 10;
-    stage.addChild(scoreText);
+   
     
     createjs.Sound.play("water", {loop: -1});
     
     spriteSheet = new createjs.SpriteSheet({
         "images": [queue.getResult('seaCreature')],
-        "frames": {"width": 148, "height": 102},
-        "animations": { "Move": [0,4],
-                      speed: 0.5}
+        "frames": {"width": 148, "height": 100},
+        "animations": { "Move": [0,3],}
         
         
     });
@@ -65,15 +60,19 @@ function queueLoaded(event)
     fishSpriteSheet = new createjs.SpriteSheet({
         "images": [queue.getResult('fish')],
         "frames": {"width": 31, "height": 30},
-        "animations": { "Swim": [0,3],
+        "animations": { "Swim": [0,2],
                        }
         
     });
     
     createCreature();
-    createFish();
+    
+    for (var i=0, l=20; i<l; i++) {
+    var sprite = createFish();
+    sprite.x = WIDTH + Math.random()*325;
+    }
     // Add ticker
-    createjs.Ticker.setFPS(15);
+    createjs.Ticker.setFPS(8);
     createjs.Ticker.addEventListener('tick', stage);
     createjs.Ticker.addEventListener('tick', tickEvent);
     
@@ -83,35 +82,26 @@ function createCreature ()
 {
 	animation = new createjs.Sprite(spriteSheet, "Move");
     animation.regX = 72;
-    animation.regY = 51;
-    animation.x = creatureXPos;
-    animation.y = creatureYPos;
+    animation.regY = 50S;
+    animation.x = 100;
+    animation.y = 100;
     animation.gotoAndPlay("Move");
-    stage.addChildAt(animation,1);	
+    stage.addChild(animation);	
     document.onkeydown = keyPressed;
 }
 
-function createFish (event)
+function createFish ()
 {
-    var l = 20;
-    var container = new createjs.Container();
-    stage.addChild(container);
-    var fishList=[];
-    for(var i =0; i<l; i++){
 	fishAnimation = new createjs.Sprite(fishSpriteSheet, "Swim");
-    container.addChild(fishAnimation);
-    fishAnimation.name = "fish"+i;
-    setFish(fishAnimation);
+   // fishAnimation.name = "fish"+i;
+    fishAnimation.hSpeed = Math.random() * 5 + 5;
+    fishAnimation.y = Math.random()*HEIGHT;
     fishAnimation.regX = 16;
     fishAnimation.regY = 15;
     fishAnimation.gotoAndPlay("Swim");
+    stage.addChild(fishAnimation);
     fishList.push(fishAnimation);
-    }
-}
-function setFish(fish)
-{
-    fish.x = WIDTH - Math.random()*300;
-    fish.y = HEIGHT - Math.random()*600;
+    return fishAnimation;
 }
 function keyPressed(event) {
 		switch(event.keyCode) {
@@ -125,15 +115,25 @@ function keyPressed(event) {
 		stage.update();
 }
 
-function tickEvent()
+function tickEvent(event)
 {
-    var l = fishList.length;
-    for(i=0;i<l; i++){
+    
+    var collision;
+    for(i=0;i<fishList.length; i++){
         var fish = fishList[i];
-        if(fishAnimation.x > -200){
-            setFish(fish);
-        } 
-        fish.x = fish.x-10;
+        fish.x -= fish.hSpeed;
+        collision = ndgmr.checkRectCollision(animation,fish);
+        if(collision){
+        fish.x = WIDTH + Math.random()*325;
+        fish.hSpeed = Math.random() * 5 + 5;
+        score+1;
+        }
+        
+        if (fish.x < 0) { // If we pass the edge, reset.
+            fish.x = WIDTH + Math.random()*325;
+    		fish.hSpeed = Math.random() * 5 + 5;
+        }
+      //  fish.x - 10;
     }
     
 	if(animation.y > HEIGHT)
@@ -144,6 +144,13 @@ function tickEvent()
     if(animation.y < 0){
         animation.y = 0;
     }
-
     
+     // Keep track of Fish eaten
+    scoreText = new createjs.Text("Fish: " + score.toString(), "36px Arial", "#FDD");
+    scoreText.x = 10;
+    scoreText.y = 10;
+    stage.addChild(scoreText);
+    
+
+    stage.update(event);
 }
