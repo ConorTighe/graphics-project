@@ -3,6 +3,7 @@ var queue;
 var WIDTH = 1300;
 var HEIGHT = 640;
 var stage;
+var points = 0;
 var animation;
 var fishAnimation;
 var fishList = [];
@@ -30,8 +31,9 @@ window.onload = function ()
     
     queue.loadManifest([
         {id: 'backgroundImage', src: 'img/UnderwaterBG.png'},
+        {id: 'song', src: 'snd/Long_Time_-TheStrafeBeat._Non-Copyrighted_8-bit_Music.mp3'},
         {id: 'water', src: 'snd/underwater.wav'},
-        {id: 'seaCreature', src: 'img/SeaCreature.png'},
+        {id: 'seaCreature', src: 'img/Player.png'},
         {id: 'fish', src: 'img/FishLeft.png'},
         ]);
     queue.load();
@@ -45,21 +47,19 @@ function queueLoaded(event)
     var backgroundImage = new createjs.Bitmap(queue.getResult("backgroundImage"))
     stage.addChild(backgroundImage);
     
-   
-    
-    createjs.Sound.play("water", {loop: -1});
+    createjs.Sound.play("song", {loop: -1});
     
     spriteSheet = new createjs.SpriteSheet({
         "images": [queue.getResult('seaCreature')],
-        "frames": {"width": 148, "height": 100},
-        "animations": { "Move": [0,3],}
+        "frames": {"width": 32, "height": 24},
+        "animations": { "Move": [0,2],}
         
         
     });
     
     fishSpriteSheet = new createjs.SpriteSheet({
         "images": [queue.getResult('fish')],
-        "frames": {"width": 31, "height": 30},
+        "frames": {"width": 32, "height": 25},
         "animations": { "Swim": [0,2],
                        }
         
@@ -67,9 +67,9 @@ function queueLoaded(event)
     
     createCreature();
     
-    for (var i=0, l=20; i<l; i++) {
+    for (var i=0, l=40; i<l; i++) {
     var sprite = createFish();
-    sprite.x = WIDTH + Math.random()*325;
+    sprite.x = WIDTH + Math.random()*475;
     }
     // Add ticker
     createjs.Ticker.setFPS(8);
@@ -78,11 +78,13 @@ function queueLoaded(event)
     
 }
 
+
+
 function createCreature ()
 {
 	animation = new createjs.Sprite(spriteSheet, "Move");
-    animation.regX = 72;
-    animation.regY = 50S;
+    animation.regX = 32;
+    animation.regY = 8;
     animation.x = 100;
     animation.y = 100;
     animation.gotoAndPlay("Move");
@@ -114,24 +116,28 @@ function keyPressed(event) {
 		}
 		stage.update();
 }
+function pointCnt(){
+    points += 1;
+}
 
 function tickEvent(event)
 {
-    
     var collision;
     for(i=0;i<fishList.length; i++){
         var fish = fishList[i];
         fish.x -= fish.hSpeed;
         collision = ndgmr.checkRectCollision(animation,fish);
         if(collision){
-        fish.x = WIDTH + Math.random()*325;
-        fish.hSpeed = Math.random() * 5 + 5;
-        score+1;
+        stage.removeChild(animation);
+        createjs.Sound.removeSound("song");
+        createjs.Sound.play("water");
+        window.alert("You died but scored: " + points);
         }
         
         if (fish.x < 0) { // If we pass the edge, reset.
             fish.x = WIDTH + Math.random()*325;
-    		fish.hSpeed = Math.random() * 5 + 5;
+    		fish.hSpeed = Math.random() * 8 + 7;
+            pointCnt();
         }
       //  fish.x - 10;
     }
@@ -144,12 +150,6 @@ function tickEvent(event)
     if(animation.y < 0){
         animation.y = 0;
     }
-    
-     // Keep track of Fish eaten
-    scoreText = new createjs.Text("Fish: " + score.toString(), "36px Arial", "#FDD");
-    scoreText.x = 10;
-    scoreText.y = 10;
-    stage.addChild(scoreText);
     
 
     stage.update(event);
