@@ -3,14 +3,15 @@ var queue;
 var WIDTH = 1300;
 var HEIGHT = 640;
 var stage;
-var points = 0;
+var points = 1;
+var l = 30;
 var animation;
 var fishAnimation;
 var fishList = [];
 var spriteSheet;
 var scoreText;
 var score = 0;
-var KEYCODE_UP = 38, KEYCODE_DOWN = 40;
+var KEYCODE_UP = 38, KEYCODE_DOWN = 40, KEYCODE_LEFT = 37, KEYCODE_RIGHT = 39;
 
 
 
@@ -67,9 +68,8 @@ function queueLoaded(event)
     
     createCreature();
     
-    for (var i=0, l=40; i<l; i++) {
-    var sprite = createFish();
-    sprite.x = WIDTH + Math.random()*475;
+    for (var i=0; i<l; i++) {
+    createFish();
     }
     // Add ticker
     createjs.Ticker.setFPS(8);
@@ -89,7 +89,7 @@ function createCreature ()
     animation.y = 100;
     animation.gotoAndPlay("Move");
     stage.addChild(animation);	
-    document.onkeydown = keyPressed;
+    
 }
 
 function createFish ()
@@ -98,6 +98,7 @@ function createFish ()
    // fishAnimation.name = "fish"+i;
     fishAnimation.hSpeed = Math.random() * 5 + 5;
     fishAnimation.y = Math.random()*HEIGHT;
+    fishAnimation.x = WIDTH + Math.random()*475;
     fishAnimation.regX = 16;
     fishAnimation.regY = 15;
     fishAnimation.gotoAndPlay("Swim");
@@ -113,11 +114,25 @@ function keyPressed(event) {
 			case KEYCODE_DOWN: 
 				animation.y += 5;
 				break;
+            case KEYCODE_LEFT: 
+				animation.x -= 5;
+				break;
+            case KEYCODE_RIGHT: 
+				animation.x += 5;
+				break;
 		}
-		stage.update();
 }
 function pointCnt(){
     points += 1;
+}
+
+function fishCnt(){
+    
+    var extraEnemys = 3;
+    
+    for (var i=0; i<extraEnemys; i++) {
+    createFish();
+    }
 }
 
 function tickEvent(event)
@@ -142,6 +157,11 @@ function tickEvent(event)
       //  fish.x - 10;
     }
     
+    document.onkeydown = keyPressed;
+    
+    if(points % 10 == 0 ){
+       fishCnt();
+    }
 	if(animation.y > HEIGHT)
 	{
         animation.y = HEIGHT;
@@ -149,6 +169,12 @@ function tickEvent(event)
 	}
     if(animation.y < 0){
         animation.y = 0;
+    }
+    if(animation.x < 0){
+        animation.x = 0;
+    }
+    if(animation.x > WIDTH){
+        animation.x = WIDTH;
     }
     
 
