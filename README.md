@@ -14,6 +14,10 @@ detection I used was licenced by MIT as its more accurate and reliable for sprit
 
 ***
 
+Game now requires internet as local library is no longer used, The url of createJS has replaced it. Github wont allow me to remove lib for some reason.
+
+***
+
 ##Instructions:
 
     + Up arrow = move up.
@@ -30,7 +34,7 @@ detection I used was licenced by MIT as its more accurate and reliable for sprit
     - [Libary](http://www.createjs.com/)
     - [Collision](https://github.com/olsn/Collision-Detection-for-EaselJS)
     
-### Software used
+### Software used:
 
     +Brackets
     +Audacity
