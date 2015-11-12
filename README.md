@@ -20,22 +20,22 @@ Game now requires internet as local library is no longer used, The url of create
 
 ##Instructions:
 
-    + Up arrow = move up.
-    + Down arrow = move down.
-    + Left arrow = move left.
-    + right arrow = move right.
++ Up arrow = move up.
++ Down arrow = move down.
++ Left arrow = move left.
++ right arrow = move right.
     
 ***
 
 ##Sources:
 
-    - [Sprites](http://spritedatabase.net/)
-    - [Soundtrack](https://www.youtube.com/watch?v=qtFuk0Cw64k)
-    - [Libary](http://www.createjs.com/)
-    - [Collision](https://github.com/olsn/Collision-Detection-for-EaselJS)
+- [Sprites](http://spritedatabase.net/)
+- [Soundtrack](https://www.youtube.com/watch?v=qtFuk0Cw64k)
+- [Libary](http://www.createjs.com/)
+- [Collision](https://github.com/olsn/Collision-Detection-for-EaselJS)
     
 ### Software used:
 
-    +Brackets
-    +Audacity
-    +Photoshop
++ Brackets
++ Audacity
++ Photoshop
