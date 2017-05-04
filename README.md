@@ -18,7 +18,7 @@ Game now requires internet as local library is no longer used, The url of create
 
 ***
 
-##Instructions:
+## Instructions:
 
 + Up arrow = move up.
 + Down arrow = move down.
@@ -27,7 +27,7 @@ Game now requires internet as local library is no longer used, The url of create
     
 ***
 
-##Sources:
+## Sources:
 
 - [Sprites](http://spritedatabase.net/)
 - [Soundtrack](https://www.youtube.com/watch?v=qtFuk0Cw64k)
